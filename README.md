@@ -1,46 +1,165 @@
-# Getting Started with Create React App
+# 🤖 Robot Programming Puzzle Game
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A browser-based educational puzzle game built with React and TypeScript where players learn programming concepts by controlling a robot through mazes.
 
-## Available Scripts
+## 🎮 Game Features
 
-In the project directory, you can run:
+### Core Gameplay
+- **15 Progressive Levels** - From simple movements to complex maze navigation
+- **Canvas-based Rendering** - Smooth grid-based game field with visual feedback
+- **Step-by-step Execution** - Watch your code execute line by line
+- **Real-time Visualization** - See the robot move as your code runs
 
-### `npm start`
+### Programming Language
+The game includes a simplified programming language with:
+- **Basic Commands**: `moveForward`, `turnLeft`, `turnRight`
+- **Conditionals**: `if(condition) { ... }`
+- **Loops**: `while(condition) { ... }`
+- **Conditions**: `canMoveForward`, `atGoal`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Educational Features
+- **Tutorial System** - Each level includes hints and learning objectives
+- **Progressive Learning Path**:
+  1. Command sequences (Levels 1-3)
+  2. Conditional operators (Levels 4-5)
+  3. While loops (Levels 6-8)
+  4. Trap avoidance (Levels 9-10)
+  5. Advanced combinations (Levels 11-15)
+- **Error Hints** - Helpful error messages when code fails
+- **Syntax Highlighting** - Color-coded code editor
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### Game Features
+- **Leaderboard System** - Track optimal solutions (minimal commands)
+- **Level Completion Tracking** - Visual indicators for completed levels
+- **Persistent Progress** - Saves to localStorage
+- **Run/Step/Reset Controls** - Full control over code execution
 
-### `npm test`
+## 🚀 Getting Started
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
 
-### `npm run build`
+### Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+# Install dependencies
+npm install
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Start development server
+npm start
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Build for production
+npm run build
 
-### `npm run eject`
+# Run tests
+npm test
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The game will open at `http://localhost:3000`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🎯 How to Play
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+1. **Select a Level** - Choose from 15 progressively challenging levels
+2. **Read the Tutorial** - Each level includes instructions and hints
+3. **Write Code** - Use the code editor to program the robot
+4. **Run or Step** - Execute your code all at once or step-by-step
+5. **Reach the Goal** - Navigate the robot to the green goal marker
+6. **Optimize** - Try to solve with minimal commands for the leaderboard!
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 📝 Example Code
 
-## Learn More
+### Level 1 - Simple Movement
+```javascript
+moveForward
+moveForward
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Level 6 - Using Loops
+```javascript
+while(canMoveForward) {
+  moveForward
+}
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Advanced - Conditionals and Loops
+```javascript
+while(canMoveForward) {
+  if(canMoveForward) {
+    moveForward
+  }
+  turnRight
+}
+```
+
+## 🏗️ Project Structure
+
+```
+src/
+├── components/          # React components
+│   ├── GameCanvas.tsx   # Canvas-based game renderer
+│   ├── CodeEditor.tsx   # Syntax-highlighted code editor
+│   ├── ControlPanel.tsx # Run/Step/Reset controls
+│   ├── LevelSelector.tsx # Level navigation
+│   ├── Leaderboard.tsx  # Best solutions display
+│   └── Tutorial.tsx     # Level instructions
+├── engine/              # Game engine
+│   └── interpreter.ts   # Language lexer, parser, and interpreter
+├── data/                # Game data
+│   └── levels.ts        # All 15 level definitions
+├── types/               # TypeScript types
+│   └── game.ts          # Game type definitions
+└── App.tsx             # Main application component
+```
+
+## 🎨 Technologies Used
+
+- **React 19** - UI framework
+- **TypeScript** - Type-safe development
+- **HTML5 Canvas** - Game rendering
+- **CSS3** - Styling and animations
+- **LocalStorage** - Progress persistence
+
+## 🔧 Development
+
+### Build
+```bash
+npm run build
+```
+
+### Test
+```bash
+npm test
+```
+
+### Lint
+The project uses ESLint with React configuration (included with Create React App).
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🎓 Learning Objectives
+
+Players will learn:
+- Sequential thinking and command ordering
+- Conditional logic (if statements)
+- Loop concepts (while loops)
+- Debugging and error handling
+- Code optimization
+- Algorithmic problem solving
+
+## 🌟 Features Highlights
+
+- ✅ 15 carefully designed levels
+- ✅ Syntax highlighting in code editor
+- ✅ Step-by-step code execution
+- ✅ Visual robot animation
+- ✅ Hint system for each level
+- ✅ Leaderboard for optimal solutions
+- ✅ Progress tracking
+- ✅ Responsive design
+- ✅ Error detection with helpful messages
+- ✅ Tutorial for programming concepts
+
+Enjoy learning programming through puzzle solving! 🎮🤖
