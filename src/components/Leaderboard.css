@@ -1,20 +1,26 @@
 .leaderboard {
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 4px;
-  border: 1px solid #dee2e6;
+  background: rgba(248, 250, 252, 0.6);
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
   margin-top: 16px;
+  backdrop-filter: blur(10px);
 }
 
 .leaderboard h3 {
-  margin: 0 0 12px 0;
-  color: #2c3e50;
+  margin: 0 0 14px 0;
+  color: #1a202c;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
 }
 
 .no-records {
-  color: #7f8c8d;
+  color: #718096;
   font-style: italic;
   margin: 8px 0;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .leaderboard-entries {
@@ -27,34 +33,45 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 12px;
-  background: white;
-  border: 1px solid #dee2e6;
-  border-radius: 4px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 8px;
+  transition: all 0.25s ease;
+}
+
+.leaderboard-entry:hover {
+  transform: translateX(2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .leaderboard-entry.top-entry {
-  background: linear-gradient(135deg, #fff9e6 0%, #ffe6cc 100%);
-  border-color: #f39c12;
-  font-weight: bold;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-color: #f59e0b;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);
 }
 
 .rank {
-  font-weight: bold;
-  color: #7f8c8d;
-  min-width: 30px;
+  font-weight: 600;
+  color: #64748b;
+  min-width: 32px;
+  font-size: 13px;
 }
 
 .top-entry .rank {
-  color: #f39c12;
+  color: #d97706;
 }
 
 .commands {
   flex: 1;
-  color: #2c3e50;
+  color: #1a202c;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .date {
-  font-size: 12px;
-  color: #95a5a6;
+  font-size: 11px;
+  color: #94a3b8;
+  font-weight: 500;
 }

@@ -25,24 +25,24 @@ const ControlPanel: React.FC<ControlPanelProps> = ({
         onClick={onRun}
         disabled={isRunning || isCompleted}
       >
-        ▶ Run
+        ▶ Запустить
       </button>
       <button
         className="control-button step-button"
         onClick={onStep}
         disabled={!canStep || isCompleted}
       >
-        ⏯ Step
+        ⏯ Шаг
       </button>
       <button
         className="control-button reset-button"
         onClick={onReset}
       >
-        ↺ Reset
+        ↺ Сброс
       </button>
       {isCompleted && (
         <div className="completion-message">
-          ✓ Level Complete!
+          ✓ Уровень пройден!
         </div>
       )}
     </div>

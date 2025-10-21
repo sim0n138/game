@@ -16,20 +16,20 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ entries, currentLevelId }) =>
   if (levelEntries.length === 0) {
     return (
       <div className="leaderboard">
-        <h3>🏆 Best Solutions</h3>
-        <p className="no-records">No records yet. Complete the level to set a record!</p>
+        <h3>🏆 Лучшие решения</h3>
+        <p className="no-records">Пока нет записей. Пройдите уровень, чтобы установить рекорд!</p>
       </div>
     );
   }
 
   return (
     <div className="leaderboard">
-      <h3>🏆 Best Solutions</h3>
+      <h3>🏆 Лучшие решения</h3>
       <div className="leaderboard-entries">
         {levelEntries.map((entry, idx) => (
           <div key={idx} className={`leaderboard-entry ${idx === 0 ? 'top-entry' : ''}`}>
             <span className="rank">#{idx + 1}</span>
-            <span className="commands">{entry.commands} commands</span>
+            <span className="commands">{entry.commands} команд</span>
             <span className="date">{new Date(entry.date).toLocaleDateString()}</span>
           </div>
         ))}

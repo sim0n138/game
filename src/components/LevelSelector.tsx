@@ -17,7 +17,7 @@ const LevelSelector: React.FC<LevelSelectorProps> = ({
 }) => {
   return (
     <div className="level-selector">
-      <h3>Levels</h3>
+      <h3>Уровни</h3>
       <div className="level-list">
         {levels.map(level => (
           <button
