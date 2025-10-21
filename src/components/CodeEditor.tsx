@@ -81,7 +81,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, currentLine, e
             onChange={(e) => onChange(e.target.value)}
             onKeyDown={handleKeyDown}
             spellCheck={false}
-            placeholder="// Write your code here..."
+            placeholder="// Напишите ваш код здесь..."
           />
           <div
             className="code-highlight"
@@ -91,7 +91,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ value, onChange, currentLine, e
       </div>
       {error && (
         <div className="error-message">
-          <strong>Error:</strong> {error}
+          <strong>Ошибка:</strong> {error}
         </div>
       )}
     </div>

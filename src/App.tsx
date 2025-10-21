@@ -12,7 +12,7 @@ import { Direction, Position, LeaderboardEntry } from './types/game';
 
 function App() {
   const [currentLevelId, setCurrentLevelId] = useState(1);
-  const [code, setCode] = useState('// Write your code here\nmoveForward\nmoveForward');
+  const [code, setCode] = useState('// Напишите ваш код здесь\nmoveForward\nmoveForward');
   const [robotPosition, setRobotPosition] = useState<Position>({ x: 1, y: 1 });
   const [robotDirection, setRobotDirection] = useState<Direction>(Direction.RIGHT);
   const [isRunning, setIsRunning] = useState(false);
@@ -222,8 +222,8 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>🤖 Robot Programming Puzzle</h1>
-        <p>Program the robot to navigate through mazes!</p>
+        <h1>🤖 Головоломка программирования робота</h1>
+        <p>Программируйте робота для прохождения лабиринтов!</p>
       </header>
       
       <div className="game-container">

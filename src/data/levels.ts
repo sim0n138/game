@@ -9,12 +9,12 @@ const G = CellType.GOAL;
 const T = CellType.TRAP;
 
 export const levels: Level[] = [
-  // Level 1: Simple forward movement
+  // Уровень 1: Простое движение вперёд
   {
     id: 1,
-    name: 'First Steps',
-    description: 'Move the robot forward to reach the goal',
-    tutorial: 'Use the moveForward command to move the robot one step forward.',
+    name: 'Первые шаги',
+    description: 'Переместите робота вперёд, чтобы достичь цели',
+    tutorial: 'Используйте команду moveForward, чтобы переместить робота на один шаг вперёд.',
     grid: [
       [W, W, W, W, W],
       [W, S, E, G, W],
@@ -26,12 +26,12 @@ export const levels: Level[] = [
     maxCommands: 10
   },
   
-  // Level 2: Turning
+  // Уровень 2: Повороты
   {
     id: 2,
-    name: 'Learning to Turn',
-    description: 'Turn and move to reach the goal',
-    tutorial: 'Use turnRight and turnLeft to change direction, then moveForward.',
+    name: 'Учимся поворачивать',
+    description: 'Поверните и двигайтесь, чтобы достичь цели',
+    tutorial: 'Используйте turnRight и turnLeft для изменения направления, затем moveForward.',
     grid: [
       [W, W, W, W, W],
       [W, S, E, W, W],
@@ -45,12 +45,12 @@ export const levels: Level[] = [
     maxCommands: 15
   },
   
-  // Level 3: Simple maze
+  // Уровень 3: Простой лабиринт
   {
     id: 3,
-    name: 'Simple Maze',
-    description: 'Navigate through a simple corridor',
-    tutorial: 'Combine movements and turns to navigate the maze.',
+    name: 'Простой лабиринт',
+    description: 'Пройдите через простой коридор',
+    tutorial: 'Комбинируйте движения и повороты для прохождения лабиринта.',
     grid: [
       [W, W, W, W, W, W, W],
       [W, S, E, E, E, E, W],
@@ -64,12 +64,12 @@ export const levels: Level[] = [
     maxCommands: 20
   },
   
-  // Level 4: Introduction to conditions
+  // Уровень 4: Введение в условия
   {
     id: 4,
-    name: 'Smart Movement',
-    description: 'Use if statements to check if you can move forward',
-    tutorial: 'Use if(canMoveForward) { moveForward } to avoid walls.',
+    name: 'Умное движение',
+    description: 'Используйте условные операторы для проверки возможности движения вперёд',
+    tutorial: 'Используйте if(canMoveForward) { moveForward } чтобы избежать стен.',
     grid: [
       [W, W, W, W, W, W],
       [W, S, E, E, G, W],
@@ -81,12 +81,12 @@ export const levels: Level[] = [
     maxCommands: 15
   },
   
-  // Level 5: Conditional maze
+  // Уровень 5: Условная навигация
   {
     id: 5,
-    name: 'Conditional Navigation',
-    description: 'Navigate using conditional movements',
-    tutorial: 'Check if you can move forward, otherwise turn.',
+    name: 'Условная навигация',
+    description: 'Перемещайтесь с использованием условных движений',
+    tutorial: 'Проверяйте, можете ли двигаться вперёд, иначе поворачивайте.',
     grid: [
       [W, W, W, W, W, W, W],
       [W, S, E, W, E, E, W],
@@ -100,12 +100,12 @@ export const levels: Level[] = [
     maxCommands: 30
   },
   
-  // Level 6: Introduction to loops
+  // Уровень 6: Введение в циклы
   {
     id: 6,
-    name: 'Repeating Actions',
-    description: 'Use while loops to repeat actions',
-    tutorial: 'Use while(canMoveForward) { moveForward } to move until hitting a wall.',
+    name: 'Повторяющиеся действия',
+    description: 'Используйте циклы while для повторения действий',
+    tutorial: 'Используйте while(canMoveForward) { moveForward } чтобы двигаться до столкновения со стеной.',
     grid: [
       [W, W, W, W, W, W, W, W, W],
       [W, S, E, E, E, E, E, G, W],
@@ -117,12 +117,12 @@ export const levels: Level[] = [
     maxCommands: 10
   },
   
-  // Level 7: Loop with turns
+  // Уровень 7: Цикл с поворотами
   {
     id: 7,
-    name: 'Loop Around',
-    description: 'Combine loops with turning',
-    tutorial: 'Use loops to move and turn repeatedly.',
+    name: 'Цикл с поворотами',
+    description: 'Комбинируйте циклы с поворотами',
+    tutorial: 'Используйте циклы для повторяющихся движений и поворотов.',
     grid: [
       [W, W, W, W, W, W, W],
       [W, S, E, E, E, E, W],
@@ -137,12 +137,12 @@ export const levels: Level[] = [
     maxCommands: 25
   },
   
-  // Level 8: Complex maze with loops
+  // Уровень 8: Сложный лабиринт с циклами
   {
     id: 8,
-    name: 'Loop Maze',
-    description: 'Navigate a complex maze using loops',
-    tutorial: 'Efficiently use loops to navigate.',
+    name: 'Лабиринт с циклами',
+    description: 'Пройдите сложный лабиринт, используя циклы',
+    tutorial: 'Эффективно используйте циклы для навигации.',
     grid: [
       [W, W, W, W, W, W, W, W, W],
       [W, S, E, W, E, E, E, E, W],
@@ -159,12 +159,12 @@ export const levels: Level[] = [
     maxCommands: 40
   },
   
-  // Level 9: Traps introduction
+  // Уровень 9: Введение в ловушки
   {
     id: 9,
-    name: 'Avoiding Traps',
-    description: 'Avoid traps while reaching the goal',
-    tutorial: 'Carefully navigate around traps (red cells).',
+    name: 'Избегая ловушек',
+    description: 'Избегайте ловушек на пути к цели',
+    tutorial: 'Осторожно обходите ловушки (красные клетки).',
     grid: [
       [W, W, W, W, W, W, W],
       [W, S, E, T, E, G, W],
@@ -177,12 +177,12 @@ export const levels: Level[] = [
     maxCommands: 20
   },
   
-  // Level 10: Complex trap navigation
+  // Уровень 10: Сложная навигация с ловушками
   {
     id: 10,
-    name: 'Trap Maze',
-    description: 'Navigate through a maze with multiple traps',
-    tutorial: 'Plan your path carefully to avoid all traps.',
+    name: 'Лабиринт с ловушками',
+    description: 'Пройдите лабиринт с множеством ловушек',
+    tutorial: 'Тщательно планируйте путь, чтобы избежать всех ловушек.',
     grid: [
       [W, W, W, W, W, W, W, W],
       [W, S, E, E, E, T, E, W],
@@ -198,12 +198,12 @@ export const levels: Level[] = [
     maxCommands: 50
   },
   
-  // Level 11: Advanced conditionals
+  // Уровень 11: Продвинутые условия
   {
     id: 11,
-    name: 'Smart Navigation',
-    description: 'Use advanced conditional logic',
-    tutorial: 'Combine if statements with loops for optimal solutions.',
+    name: 'Умная навигация',
+    description: 'Используйте продвинутую условную логику',
+    tutorial: 'Комбинируйте условные операторы с циклами для оптимальных решений.',
     grid: [
       [W, W, W, W, W, W, W, W, W, W],
       [W, S, E, E, W, E, E, E, E, W],
@@ -219,12 +219,12 @@ export const levels: Level[] = [
     maxCommands: 60
   },
   
-  // Level 12: Spiral maze
+  // Уровень 12: Спиральный лабиринт
   {
     id: 12,
-    name: 'The Spiral',
-    description: 'Navigate through a spiral pattern',
-    tutorial: 'Use efficient loops to traverse the spiral.',
+    name: 'Спираль',
+    description: 'Пройдите по спиральному узору',
+    tutorial: 'Используйте эффективные циклы для прохождения спирали.',
     grid: [
       [W, W, W, W, W, W, W, W, W],
       [W, S, E, E, E, E, E, E, W],
@@ -242,12 +242,12 @@ export const levels: Level[] = [
     maxCommands: 70
   },
   
-  // Level 13: Multiple paths
+  // Уровень 13: Множество путей
   {
     id: 13,
-    name: 'Choose Your Path',
-    description: 'Find the optimal path through multiple routes',
-    tutorial: 'Multiple paths exist - find the shortest one!',
+    name: 'Выберите свой путь',
+    description: 'Найдите оптимальный путь среди множества маршрутов',
+    tutorial: 'Существует несколько путей - найдите самый короткий!',
     grid: [
       [W, W, W, W, W, W, W, W, W, W],
       [W, S, E, E, W, E, E, E, E, W],
@@ -264,12 +264,12 @@ export const levels: Level[] = [
     maxCommands: 80
   },
   
-  // Level 14: Advanced traps and loops
+  // Уровень 14: Продвинутые ловушки и циклы
   {
     id: 14,
-    name: 'Expert Challenge',
-    description: 'Complex maze with traps requiring expert skills',
-    tutorial: 'Use all your skills: loops, conditions, and planning.',
+    name: 'Испытание эксперта',
+    description: 'Сложный лабиринт с ловушками для экспертов',
+    tutorial: 'Используйте все свои навыки: циклы, условия и планирование.',
     grid: [
       [W, W, W, W, W, W, W, W, W, W, W],
       [W, S, E, T, E, E, W, E, E, E, W],
@@ -288,12 +288,12 @@ export const levels: Level[] = [
     maxCommands: 100
   },
   
-  // Level 15: Ultimate challenge
+  // Уровень 15: Финальное испытание
   {
     id: 15,
-    name: 'Master Puzzle',
-    description: 'The ultimate programming challenge',
-    tutorial: 'Combine everything you\'ve learned to solve this final puzzle!',
+    name: 'Мастер головоломок',
+    description: 'Финальное испытание по программированию',
+    tutorial: 'Объедините всё, что вы изучили, чтобы решить эту финальную головоломку!',
     grid: [
       [W, W, W, W, W, W, W, W, W, W, W, W],
       [W, S, E, E, E, W, E, T, E, E, E, W],
