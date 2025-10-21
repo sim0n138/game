@@ -1,32 +1,34 @@
-# 🤖 Robot Programming Puzzle Game
+# 🤖 Головоломка программирования робота
 
-A browser-based educational puzzle game built with React and TypeScript where players learn programming concepts by controlling a robot through mazes.
+Образовательная игра-головоломка для браузера, созданная на React и TypeScript, где игроки изучают концепции программирования, управляя роботом в лабиринтах.
 
-## 🎮 Game Features
+_Robot Programming Puzzle Game - A browser-based educational puzzle game built with React and TypeScript where players learn programming concepts by controlling a robot through mazes._
 
-### Core Gameplay
-- **15 Progressive Levels** - From simple movements to complex maze navigation
-- **Canvas-based Rendering** - Smooth grid-based game field with visual feedback
-- **Step-by-step Execution** - Watch your code execute line by line
-- **Real-time Visualization** - See the robot move as your code runs
+## 🎮 Особенности игры / Game Features
 
-### Programming Language
-The game includes a simplified programming language with:
-- **Basic Commands**: `moveForward`, `turnLeft`, `turnRight`
-- **Conditionals**: `if(condition) { ... }`
-- **Loops**: `while(condition) { ... }`
-- **Conditions**: `canMoveForward`, `atGoal`
+### Основной геймплей / Core Gameplay
+- **15 прогрессивных уровней** - От простых движений до сложной навигации в лабиринте
+- **Canvas-рендеринг** - Плавное игровое поле на основе сетки с визуальной обратной связью
+- **Пошаговое выполнение** - Наблюдайте за выполнением кода построчно
+- **Визуализация в реальном времени** - Смотрите, как робот движется по вашему коду
 
-### Educational Features
-- **Tutorial System** - Each level includes hints and learning objectives
-- **Progressive Learning Path**:
-  1. Command sequences (Levels 1-3)
-  2. Conditional operators (Levels 4-5)
-  3. While loops (Levels 6-8)
-  4. Trap avoidance (Levels 9-10)
-  5. Advanced combinations (Levels 11-15)
-- **Error Hints** - Helpful error messages when code fails
-- **Syntax Highlighting** - Color-coded code editor
+### Язык программирования / Programming Language
+Игра включает упрощённый язык программирования с:
+- **Базовые команды**: `moveForward`, `turnLeft`, `turnRight`
+- **Условные операторы**: `if(condition) { ... }`
+- **Циклы**: `while(condition) { ... }`
+- **Условия**: `canMoveForward`, `atGoal`
+
+### Образовательные функции / Educational Features
+- **Система обучения** - Каждый уровень включает подсказки и цели обучения
+- **Прогрессивный путь обучения**:
+  1. Последовательности команд (Уровни 1-3)
+  2. Условные операторы (Уровни 4-5)
+  3. Циклы while (Уровни 6-8)
+  4. Избегание ловушек (Уровни 9-10)
+  5. Продвинутые комбинации (Уровни 11-15)
+- **Подсказки при ошибках** - Полезные сообщения об ошибках
+- **Подсветка синтаксиса** - Цветовое выделение кода в редакторе
 
 ### Game Features
 - **Leaderboard System** - Track optimal solutions (minimal commands)
