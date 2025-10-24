@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { SudokuBoard } from '../types/sudoku';
 
 interface SudokuGridProps {
@@ -9,7 +9,7 @@ interface SudokuGridProps {
   onCellClick: (row: number, col: number) => void;
 }
 
-const SudokuGrid: React.FC<SudokuGridProps> = ({
+const SudokuGrid: React.FC<SudokuGridProps> = memo(({
   board,
   initialBoard,
   selectedCell,
@@ -80,6 +80,8 @@ const SudokuGrid: React.FC<SudokuGridProps> = ({
       ))}
     </div>
   );
-};
+});
+
+SudokuGrid.displayName = 'SudokuGrid';
 
 export default SudokuGrid;

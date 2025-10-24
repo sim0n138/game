@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 interface NumberPadProps {
   onNumberClick: (num: number) => void;
   onClear: () => void;
 }
 
-const NumberPad: React.FC<NumberPadProps> = ({ onNumberClick, onClear }) => {
+const NumberPad: React.FC<NumberPadProps> = memo(({ onNumberClick, onClear }) => {
   return (
     <div className="number-pad">
       <div className="number-buttons">
@@ -24,6 +24,8 @@ const NumberPad: React.FC<NumberPadProps> = ({ onNumberClick, onClear }) => {
       </button>
     </div>
   );
-};
+});
+
+NumberPad.displayName = 'NumberPad';
 
 export default NumberPad;

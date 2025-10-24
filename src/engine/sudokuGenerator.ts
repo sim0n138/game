@@ -216,7 +216,7 @@ export function isBoardCorrect(board: SudokuBoard): boolean {
   return true;
 }
 
-// Проверяет наличие ошибок в текущей доске
+// Проверяет наличие ошибок в текущей доске (чистая функция, без мутаций)
 export function hasErrors(board: SudokuBoard): boolean[][] {
   const errors: boolean[][] = Array(9).fill(null).map(() => Array(9).fill(false));
 
@@ -224,12 +224,12 @@ export function hasErrors(board: SudokuBoard): boolean[][] {
     for (let col = 0; col < 9; col++) {
       const val = board[row][col];
       if (val !== null) {
-        // Временно убираем значение для проверки
-        board[row][col] = null;
-        if (!isValidMove(board, row, col, val)) {
+        // Создаём временную копию доски для проверки
+        const tempBoard = copyBoard(board);
+        tempBoard[row][col] = null;
+        if (!isValidMove(tempBoard, row, col, val)) {
           errors[row][col] = true;
         }
-        board[row][col] = val;
       }
     }
   }
