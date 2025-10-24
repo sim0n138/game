@@ -1,0 +1,85 @@
+/* GameControls Module Styles */
+.controls {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  max-width: 500px;
+  width: 100%;
+}
+
+.button {
+  flex: 1;
+  min-width: 120px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.newGame {
+  background: #48bb78;
+  color: white;
+}
+
+.newGame:hover {
+  background: #38a169;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(72, 187, 120, 0.3);
+}
+
+.check {
+  background: #4299e1;
+  color: white;
+}
+
+.check:hover {
+  background: #3182ce;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(66, 153, 225, 0.3);
+}
+
+.hint {
+  background: #ed8936;
+  color: white;
+}
+
+.hint:hover {
+  background: #dd6b20;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(237, 137, 54, 0.3);
+}
+
+.completionMessage {
+  width: 100%;
+  background: #c6f6d5;
+  color: #22543d;
+  padding: 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(34, 84, 61, 0.1);
+}
+
+.successIcon {
+  font-size: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+  }
+
+  .button {
+    min-width: 100%;
+  }
+}

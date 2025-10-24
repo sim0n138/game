@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { Difficulty } from '../types/sudoku';
+import styles from './DifficultySelector.module.css';
 
 interface DifficultySelectorProps {
   currentDifficulty: Difficulty;
@@ -18,13 +19,13 @@ const DifficultySelector: React.FC<DifficultySelectorProps> = memo(({
   ];
 
   return (
-    <div className="difficulty-selector">
+    <div className={styles.selector}>
       <h3>Уровень сложности</h3>
-      <div className="difficulty-buttons">
+      <div className={styles.buttons}>
         {difficulties.map(({ value, label }) => (
           <button
             key={value}
-            className={`difficulty-button ${currentDifficulty === value ? 'active' : ''}`}
+            className={`${styles.button} ${currentDifficulty === value ? styles.active : ''}`}
             onClick={() => onSelectDifficulty(value)}
           >
             {label}

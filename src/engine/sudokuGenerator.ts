@@ -216,7 +216,8 @@ export function isBoardCorrect(board: SudokuBoard): boolean {
   return true;
 }
 
-// Проверяет наличие ошибок в текущей доске (чистая функция, без мутаций)
+// Проверяет наличие ошибок в текущей доске (оптимизированная версия V3)
+// Не создает копии доски, проверяет дубликаты напрямую
 export function hasErrors(board: SudokuBoard): boolean[][] {
   const errors: boolean[][] = Array(9).fill(null).map(() => Array(9).fill(false));
 
@@ -224,11 +225,38 @@ export function hasErrors(board: SudokuBoard): boolean[][] {
     for (let col = 0; col < 9; col++) {
       const val = board[row][col];
       if (val !== null) {
-        // Создаём временную копию доски для проверки
-        const tempBoard = copyBoard(board);
-        tempBoard[row][col] = null;
-        if (!isValidMove(tempBoard, row, col, val)) {
-          errors[row][col] = true;
+        // Проверка строки на дубликаты
+        for (let c = 0; c < 9; c++) {
+          if (c !== col && board[row][c] === val) {
+            errors[row][col] = true;
+            break;
+          }
+        }
+
+        // Проверка столбца на дубликаты
+        if (!errors[row][col]) {
+          for (let r = 0; r < 9; r++) {
+            if (r !== row && board[r][col] === val) {
+              errors[row][col] = true;
+              break;
+            }
+          }
+        }
+
+        // Проверка квадрата 3x3 на дубликаты
+        if (!errors[row][col]) {
+          const startRow = Math.floor(row / 3) * 3;
+          const startCol = Math.floor(col / 3) * 3;
+
+          for (let r = startRow; r < startRow + 3; r++) {
+            for (let c = startCol; c < startCol + 3; c++) {
+              if ((r !== row || c !== col) && board[r][c] === val) {
+                errors[row][col] = true;
+                break;
+              }
+            }
+            if (errors[row][col]) break;
+          }
         }
       }
     }

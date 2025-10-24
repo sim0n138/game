@@ -1,0 +1,21 @@
+/* Timer Module Styles */
+.timer {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timer h3 {
+  margin: 0 0 12px 0;
+  color: #2d3748;
+  font-size: 18px;
+}
+
+.display {
+  font-size: 32px;
+  font-weight: 700;
+  color: #4299e1;
+  font-family: 'Courier New', monospace;
+  text-align: center;
+}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, memo } from 'react';
+import styles from './Timer.module.css';
 
 interface TimerProps {
   isRunning: boolean;
@@ -44,9 +45,9 @@ const Timer: React.FC<TimerProps> = memo(({ isRunning, onTimeUpdate }) => {
   };
 
   return (
-    <div className="timer">
+    <div className={styles.timer}>
       <h3>Время</h3>
-      <div className="timer-display">{formatTime(elapsedTime)}</div>
+      <div className={styles.display}>{formatTime(elapsedTime)}</div>
     </div>
   );
 });

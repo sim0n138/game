@@ -1,0 +1,35 @@
+/* GameStats Module Styles */
+.stats {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stats h3 {
+  margin: 0 0 16px 0;
+  color: #2d3748;
+  font-size: 18px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.label {
+  color: #718096;
+  font-size: 14px;
+}
+
+.value {
+  color: #2d3748;
+  font-weight: 600;
+  font-size: 16px;
+}

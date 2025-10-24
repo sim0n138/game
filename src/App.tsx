@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import './App.css';
+import styles from './App.module.css';
 import SudokuGrid from './components/SudokuGrid';
 import DifficultySelector from './components/DifficultySelector';
 import NumberPad from './components/NumberPad';
@@ -57,14 +57,14 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className={styles.app}>
+      <header className={styles.header}>
         <h1>🧩 Sudoku</h1>
         <p>Классическая игра-головоломка</p>
       </header>
 
-      <div className="game-container">
-        <div className="left-panel">
+      <div className={styles.gameContainer}>
+        <div className={styles.leftPanel}>
           <DifficultySelector
             currentDifficulty={difficulty}
             onSelectDifficulty={setDifficulty}
@@ -78,7 +78,7 @@ function App() {
           <GameStats stats={stats} />
         </div>
 
-        <div className="main-panel">
+        <div className={styles.mainPanel}>
           <SudokuGrid
             board={board}
             initialBoard={puzzle.board}
@@ -100,8 +100,8 @@ function App() {
           />
         </div>
 
-        <div className="right-panel">
-          <div className="instructions">
+        <div className={styles.rightPanel}>
+          <div className={styles.instructions}>
             <h3>Как играть</h3>
             <ul>
               <li>Заполните сетку 9×9 числами от 1 до 9</li>

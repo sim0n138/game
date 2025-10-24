@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { GameStats as Stats } from '../types/sudoku';
+import styles from './GameStats.module.css';
 
 interface GameStatsProps {
   stats: Stats;
@@ -14,15 +15,15 @@ const GameStats: React.FC<GameStatsProps> = memo(({ stats }) => {
   };
 
   return (
-    <div className="game-stats">
+    <div className={styles.stats}>
       <h3>Статистика</h3>
-      <div className="stat-item">
-        <span className="stat-label">Решено:</span>
-        <span className="stat-value">{stats.puzzlesCompleted}</span>
+      <div className={styles.item}>
+        <span className={styles.label}>Решено:</span>
+        <span className={styles.value}>{stats.puzzlesCompleted}</span>
       </div>
-      <div className="stat-item">
-        <span className="stat-label">Лучшее время:</span>
-        <span className="stat-value">{formatTime(stats.bestTime)}</span>
+      <div className={styles.item}>
+        <span className={styles.label}>Лучшее время:</span>
+        <span className={styles.value}>{formatTime(stats.bestTime)}</span>
       </div>
     </div>
   );
