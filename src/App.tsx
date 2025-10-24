@@ -1,280 +1,268 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
-import GameCanvas from './components/GameCanvas';
-import CodeEditor from './components/CodeEditor';
-import ControlPanel from './components/ControlPanel';
-import LevelSelector from './components/LevelSelector';
-import Leaderboard from './components/Leaderboard';
-import Tutorial from './components/Tutorial';
-import { levels } from './data/levels';
-import { Lexer, Parser, Interpreter } from './engine/interpreter';
-import { Direction, Position, LeaderboardEntry } from './types/game';
+import SudokuGrid from './components/SudokuGrid';
+import DifficultySelector from './components/DifficultySelector';
+import NumberPad from './components/NumberPad';
+import GameControls from './components/GameControls';
+import GameStats from './components/GameStats';
+import { SudokuBoard, Difficulty, SudokuPuzzle, GameStats as Stats } from './types/sudoku';
+import { generatePuzzle, copyBoard, isBoardComplete, isBoardCorrect, hasErrors } from './engine/sudokuGenerator';
 
 function App() {
-  const [currentLevelId, setCurrentLevelId] = useState(1);
-  const [code, setCode] = useState('// Напишите ваш код здесь\nmoveForward\nmoveForward');
-  const [robotPosition, setRobotPosition] = useState<Position>({ x: 1, y: 1 });
-  const [robotDirection, setRobotDirection] = useState<Direction>(Direction.RIGHT);
-  const [isRunning, setIsRunning] = useState(false);
+  const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.EASY);
+  const [puzzle, setPuzzle] = useState<SudokuPuzzle | null>(null);
+  const [board, setBoard] = useState<SudokuBoard>([]);
+  const [selectedCell, setSelectedCell] = useState<{ row: number; col: number } | null>(null);
+  const [errors, setErrors] = useState<boolean[][]>([]);
   const [isCompleted, setIsCompleted] = useState(false);
-  const [currentLine, setCurrentLine] = useState<number | undefined>();
-  const [error, setError] = useState<string | undefined>();
-  const [executionSteps, setExecutionSteps] = useState<any[]>([]);
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [completedLevels, setCompletedLevels] = useState<number[]>([]);
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [startTime, setStartTime] = useState<number | null>(null);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [stats, setStats] = useState<Stats>({
+    puzzlesCompleted: 0,
+    bestTime: null,
+    lastPlayed: null
+  });
 
-  const currentLevel = levels.find(l => l.id === currentLevelId) || levels[0];
-
-  // Load data from localStorage
+  // Загрузка статистики из localStorage
   useEffect(() => {
-    const savedCompletedLevels = localStorage.getItem('completedLevels');
-    if (savedCompletedLevels) {
-      setCompletedLevels(JSON.parse(savedCompletedLevels));
-    }
-
-    const savedLeaderboard = localStorage.getItem('leaderboard');
-    if (savedLeaderboard) {
-      setLeaderboard(JSON.parse(savedLeaderboard));
+    const savedStats = localStorage.getItem('sudokuStats');
+    if (savedStats) {
+      setStats(JSON.parse(savedStats));
     }
   }, []);
 
-  // Reset when level changes
+  // Создание новой игры
+  const createNewGame = useCallback(() => {
+    const newPuzzle = generatePuzzle(Date.now(), difficulty);
+    setPuzzle(newPuzzle);
+    setBoard(copyBoard(newPuzzle.board));
+    setSelectedCell(null);
+    setErrors(Array(9).fill(null).map(() => Array(9).fill(false)));
+    setIsCompleted(false);
+    setStartTime(Date.now());
+    setElapsedTime(0);
+  }, [difficulty]);
+
+  // Инициализация игры при первой загрузке
   useEffect(() => {
-    setRobotPosition(currentLevel.startPosition);
-    setRobotDirection(currentLevel.startDirection);
-    setIsRunning(false);
-    setIsCompleted(false);
-    setCurrentLine(undefined);
-    setError(undefined);
-    setExecutionSteps([]);
-    setCurrentStepIndex(0);
-  }, [currentLevelId, currentLevel]);
+    createNewGame();
+  }, [createNewGame]);
 
-  const handleReset = () => {
-    setRobotPosition(currentLevel.startPosition);
-    setRobotDirection(currentLevel.startDirection);
-    setIsRunning(false);
-    setIsCompleted(false);
-    setCurrentLine(undefined);
-    setError(undefined);
-    setExecutionSteps([]);
-    setCurrentStepIndex(0);
-  };
-
-  const countCommands = (code: string): number => {
-    const lines = code.split('\n');
-    let count = 0;
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (trimmed && !trimmed.startsWith('//') && !trimmed.match(/^[{}()]/)) {
-        if (trimmed.match(/^(moveForward|turnLeft|turnRight)/)) {
-          count++;
-        }
-      }
-    }
-    return count;
-  };
-
-  const handleRun = () => {
-    setError(undefined);
-    setIsRunning(true);
-    setCurrentStepIndex(0);
-
-    try {
-      const lexer = new Lexer(code);
-      const tokens = lexer.tokenize();
-      const parser = new Parser(tokens);
-      const commands = parser.parse();
-
-      const interpreter = new Interpreter(
-        currentLevel.grid,
-        currentLevel.startPosition,
-        currentLevel.startDirection,
-        currentLevel.goalPosition
-      );
-
-      const result = interpreter.execute(commands);
-
-      if (result.error) {
-        setError(result.error);
-        setIsRunning(false);
-        return;
-      }
-
-      setExecutionSteps(result.steps);
-
-      // Animate through steps
-      let stepIdx = 0;
+  // Таймер
+  useEffect(() => {
+    if (startTime && !isCompleted) {
       const interval = setInterval(() => {
-        if (stepIdx < result.steps.length) {
-          const step = result.steps[stepIdx];
-          setRobotPosition(step.robotPosition);
-          setRobotDirection(step.robotDirection);
-          setCurrentLine(step.line);
-          stepIdx++;
-        } else {
-          clearInterval(interval);
-          setIsRunning(false);
-          setCurrentLine(undefined);
+        setElapsedTime(Math.floor((Date.now() - startTime) / 1000));
+      }, 1000);
 
-          if (result.success) {
-            setIsCompleted(true);
-            
-            // Update completed levels
-            if (!completedLevels.includes(currentLevelId)) {
-              const newCompleted = [...completedLevels, currentLevelId];
-              setCompletedLevels(newCompleted);
-              localStorage.setItem('completedLevels', JSON.stringify(newCompleted));
-            }
+      return () => clearInterval(interval);
+    }
+  }, [startTime, isCompleted]);
 
-            // Update leaderboard
-            const commandCount = countCommands(code);
-            const newEntry: LeaderboardEntry = {
-              levelId: currentLevelId,
-              commands: commandCount,
-              date: new Date().toISOString()
-            };
-            const newLeaderboard = [...leaderboard, newEntry];
-            setLeaderboard(newLeaderboard);
-            localStorage.setItem('leaderboard', JSON.stringify(newLeaderboard));
-          }
-        }
-      }, 500);
-    } catch (err) {
-      setError((err as Error).message);
-      setIsRunning(false);
+  // Обработка нажатия на ячейку
+  const handleCellClick = (row: number, col: number) => {
+    if (puzzle && puzzle.board[row][col] === null && !isCompleted) {
+      setSelectedCell({ row, col });
     }
   };
 
-  const handleStep = () => {
-    if (executionSteps.length === 0) {
-      // First time stepping - parse and prepare
-      setError(undefined);
-      try {
-        const lexer = new Lexer(code);
-        const tokens = lexer.tokenize();
-        const parser = new Parser(tokens);
-        const commands = parser.parse();
+  // Обработка ввода числа
+  const handleNumberClick = useCallback((num: number) => {
+    if (selectedCell && !isCompleted) {
+      const newBoard = copyBoard(board);
+      newBoard[selectedCell.row][selectedCell.col] = num;
+      setBoard(newBoard);
 
-        const interpreter = new Interpreter(
-          currentLevel.grid,
-          currentLevel.startPosition,
-          currentLevel.startDirection,
-          currentLevel.goalPosition
-        );
+      // Проверка ошибок
+      const newErrors = hasErrors(newBoard);
+      setErrors(newErrors);
 
-        const result = interpreter.execute(commands);
+      // Проверка завершения
+      if (isBoardComplete(newBoard) && isBoardCorrect(newBoard)) {
+        setIsCompleted(true);
 
-        if (result.error) {
-          setError(result.error);
-          return;
-        }
-
-        setExecutionSteps(result.steps);
-        setCurrentStepIndex(0);
-      } catch (err) {
-        setError((err as Error).message);
-        return;
+        // Обновление статистики
+        const newStats = {
+          puzzlesCompleted: stats.puzzlesCompleted + 1,
+          bestTime: stats.bestTime === null || elapsedTime < stats.bestTime
+            ? elapsedTime
+            : stats.bestTime,
+          lastPlayed: new Date().toISOString()
+        };
+        setStats(newStats);
+        localStorage.setItem('sudokuStats', JSON.stringify(newStats));
       }
-    } else if (currentStepIndex < executionSteps.length) {
-      const step = executionSteps[currentStepIndex];
-      setRobotPosition(step.robotPosition);
-      setRobotDirection(step.robotDirection);
-      setCurrentLine(step.line);
-      setCurrentStepIndex(currentStepIndex + 1);
+    }
+  }, [selectedCell, isCompleted, board, stats, elapsedTime]);
 
-      if (currentStepIndex + 1 >= executionSteps.length) {
-        // Check if completed
-        const lastStep = executionSteps[executionSteps.length - 1];
-        if (
-          lastStep.robotPosition.x === currentLevel.goalPosition.x &&
-          lastStep.robotPosition.y === currentLevel.goalPosition.y
-        ) {
-          setIsCompleted(true);
-          
-          // Update completed levels
-          if (!completedLevels.includes(currentLevelId)) {
-            const newCompleted = [...completedLevels, currentLevelId];
-            setCompletedLevels(newCompleted);
-            localStorage.setItem('completedLevels', JSON.stringify(newCompleted));
-          }
+  // Очистка ячейки
+  const handleClear = useCallback(() => {
+    if (selectedCell && !isCompleted) {
+      const newBoard = copyBoard(board);
+      newBoard[selectedCell.row][selectedCell.col] = null;
+      setBoard(newBoard);
 
-          // Update leaderboard
-          const commandCount = countCommands(code);
-          const newEntry: LeaderboardEntry = {
-            levelId: currentLevelId,
-            commands: commandCount,
-            date: new Date().toISOString()
-          };
-          const newLeaderboard = [...leaderboard, newEntry];
-          setLeaderboard(newLeaderboard);
-          localStorage.setItem('leaderboard', JSON.stringify(newLeaderboard));
-        }
+      // Обновление ошибок
+      const newErrors = hasErrors(newBoard);
+      setErrors(newErrors);
+    }
+  }, [selectedCell, isCompleted, board]);
+
+  // Проверка решения
+  const handleCheckSolution = () => {
+    if (isBoardComplete(board)) {
+      if (isBoardCorrect(board)) {
+        alert('Отлично! Решение правильное!');
+        setIsCompleted(true);
+      } else {
+        alert('В решении есть ошибки. Попробуйте еще раз!');
+      }
+    } else {
+      alert('Головоломка еще не завершена!');
+    }
+  };
+
+  // Подсказка
+  const handleHint = () => {
+    if (puzzle && selectedCell && !isCompleted) {
+      const solution = puzzle.solution[selectedCell.row][selectedCell.col];
+      if (solution !== null) {
+        const newBoard = copyBoard(board);
+        newBoard[selectedCell.row][selectedCell.col] = solution;
+        setBoard(newBoard);
+
+        // Обновление ошибок
+        const newErrors = hasErrors(newBoard);
+        setErrors(newErrors);
       }
     }
   };
 
-  const handleSelectLevel = (levelId: number) => {
-    setCurrentLevelId(levelId);
+  // Новая игра
+  const handleNewGame = () => {
+    if (window.confirm('Начать новую игру? Текущий прогресс будет потерян.')) {
+      createNewGame();
+    }
   };
+
+  // Изменение сложности
+  const handleDifficultyChange = (newDifficulty: Difficulty) => {
+    setDifficulty(newDifficulty);
+    setTimeout(() => {
+      const newPuzzle = generatePuzzle(Date.now(), newDifficulty);
+      setPuzzle(newPuzzle);
+      setBoard(copyBoard(newPuzzle.board));
+      setSelectedCell(null);
+      setErrors(Array(9).fill(null).map(() => Array(9).fill(false)));
+      setIsCompleted(false);
+      setStartTime(Date.now());
+      setElapsedTime(0);
+    }, 0);
+  };
+
+  // Обработка клавиш
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (!selectedCell || isCompleted) return;
+
+      // Числовые клавиши
+      if (e.key >= '1' && e.key <= '9') {
+        handleNumberClick(parseInt(e.key));
+      }
+
+      // Удаление
+      if (e.key === 'Backspace' || e.key === 'Delete' || e.key === '0') {
+        handleClear();
+      }
+
+      // Навигация стрелками
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.preventDefault();
+        const newRow = selectedCell.row + (e.key === 'ArrowDown' ? 1 : e.key === 'ArrowUp' ? -1 : 0);
+        const newCol = selectedCell.col + (e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0);
+
+        if (newRow >= 0 && newRow < 9 && newCol >= 0 && newCol < 9) {
+          setSelectedCell({ row: newRow, col: newCol });
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [selectedCell, isCompleted, handleNumberClick, handleClear]);
+
+  const formatTime = (seconds: number): string => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  if (!puzzle) {
+    return <div>Загрузка...</div>;
+  }
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1>🤖 Головоломка программирования робота</h1>
-        <p>Программируйте робота для прохождения лабиринтов!</p>
+        <h1>🧩 Sudoku</h1>
+        <p>Классическая игра-головоломка</p>
       </header>
-      
+
       <div className="game-container">
         <div className="left-panel">
-          <LevelSelector
-            levels={levels}
-            currentLevelId={currentLevelId}
-            onSelectLevel={handleSelectLevel}
-            completedLevels={completedLevels}
+          <DifficultySelector
+            currentDifficulty={difficulty}
+            onSelectDifficulty={handleDifficultyChange}
           />
-          <Leaderboard
-            entries={leaderboard}
-            currentLevelId={currentLevelId}
-          />
+
+          <div className="timer">
+            <h3>Время</h3>
+            <div className="timer-display">{formatTime(elapsedTime)}</div>
+          </div>
+
+          <GameStats stats={stats} />
         </div>
 
         <div className="main-panel">
-          <Tutorial
-            title={currentLevel.name}
-            description={currentLevel.description}
-            tutorial={currentLevel.tutorial}
+          <SudokuGrid
+            board={board}
+            initialBoard={puzzle.board}
+            selectedCell={selectedCell}
+            errors={errors}
+            onCellClick={handleCellClick}
           />
-          
-          <div className="game-area">
-            <div className="canvas-container">
-              <GameCanvas
-                grid={currentLevel.grid}
-                robotPosition={robotPosition}
-                robotDirection={robotDirection}
-                goalPosition={currentLevel.goalPosition}
-              />
-            </div>
 
-            <div className="editor-container">
-              <CodeEditor
-                value={code}
-                onChange={setCode}
-                currentLine={currentLine}
-                error={error}
-              />
-            </div>
-          </div>
+          <NumberPad
+            onNumberClick={handleNumberClick}
+            onClear={handleClear}
+          />
 
-          <ControlPanel
-            onRun={handleRun}
-            onStep={handleStep}
-            onReset={handleReset}
-            isRunning={isRunning}
+          <GameControls
+            onNewGame={handleNewGame}
+            onCheckSolution={handleCheckSolution}
+            onHint={handleHint}
             isCompleted={isCompleted}
-            canStep={executionSteps.length > 0 && currentStepIndex < executionSteps.length}
           />
+        </div>
+
+        <div className="right-panel">
+          <div className="instructions">
+            <h3>Как играть</h3>
+            <ul>
+              <li>Заполните сетку 9×9 числами от 1 до 9</li>
+              <li>В каждой строке не должно быть повторяющихся чисел</li>
+              <li>В каждом столбце не должно быть повторяющихся чисел</li>
+              <li>В каждом квадрате 3×3 не должно быть повторяющихся чисел</li>
+            </ul>
+
+            <h4>Управление</h4>
+            <ul>
+              <li>Кликните на ячейку и выберите число</li>
+              <li>Используйте клавиши 1-9 для ввода</li>
+              <li>Backspace/Delete для очистки</li>
+              <li>Стрелки для навигации</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
