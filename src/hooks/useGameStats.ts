@@ -17,9 +17,14 @@ export function useGameStats(): UseGameStatsReturn {
 
   // Загрузка статистики при монтировании
   useEffect(() => {
-    const savedStats = localStorage.getItem(STORAGE_KEY);
-    if (savedStats) {
-      setStats(JSON.parse(savedStats));
+    try {
+      const savedStats = localStorage.getItem(STORAGE_KEY);
+      if (savedStats) {
+        setStats(JSON.parse(savedStats));
+      }
+    } catch (error) {
+      console.error('Failed to load stats from localStorage:', error);
+      // Продолжаем с дефолтной статистикой
     }
   }, []);
 
@@ -34,8 +39,13 @@ export function useGameStats(): UseGameStatsReturn {
         lastPlayed: new Date().toISOString()
       };
 
-      // Сохраняем в localStorage
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newStats));
+      // Сохраняем в localStorage с обработкой ошибок
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(newStats));
+      } catch (error) {
+        console.error('Failed to save stats to localStorage:', error);
+        // Продолжаем работу даже если не удалось сохранить
+      }
 
       return newStats;
     });

@@ -1,6 +1,13 @@
 import { useState, useCallback, useEffect } from 'react';
-import { SudokuBoard, Difficulty, SudokuPuzzle } from '../types/sudoku';
+import { SudokuBoard, Difficulty, SudokuPuzzle, BOARD_SIZE } from '../types/sudoku';
 import { generatePuzzle, copyBoard, isBoardComplete, isBoardCorrect, hasErrors } from '../engine/sudokuGenerator';
+
+interface UseGameStateCallbacks {
+  onSuccess?: (message: string) => void;
+  onError?: (message: string) => void;
+  onInfo?: (message: string) => void;
+  onConfirm?: (message: string, onConfirmed: () => void) => void;
+}
 
 interface UseGameStateReturn {
   puzzle: SudokuPuzzle | null;
@@ -19,7 +26,7 @@ interface UseGameStateReturn {
   setSelectedCell: (cell: { row: number; col: number } | null) => void;
 }
 
-export function useGameState(): UseGameStateReturn {
+export function useGameState(callbacks?: UseGameStateCallbacks): UseGameStateReturn {
   const [difficulty, setDifficultyState] = useState<Difficulty>(Difficulty.EASY);
   const [puzzle, setPuzzle] = useState<SudokuPuzzle | null>(null);
   const [board, setBoard] = useState<SudokuBoard>([]);
@@ -33,7 +40,7 @@ export function useGameState(): UseGameStateReturn {
     setPuzzle(newPuzzle);
     setBoard(copyBoard(newPuzzle.board));
     setSelectedCell(null);
-    setErrors(Array(9).fill(null).map(() => Array(9).fill(false)));
+    setErrors(Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(false)));
     setIsCompleted(false);
   }, []);
 
@@ -90,15 +97,15 @@ export function useGameState(): UseGameStateReturn {
   const handleCheckSolution = useCallback(() => {
     if (isBoardComplete(board)) {
       if (isBoardCorrect(board)) {
-        alert('Отлично! Решение правильное!');
+        callbacks?.onSuccess?.('Отлично! Решение правильное!');
         setIsCompleted(true);
       } else {
-        alert('В решении есть ошибки. Попробуйте еще раз!');
+        callbacks?.onError?.('В решении есть ошибки. Попробуйте еще раз!');
       }
     } else {
-      alert('Головоломка еще не завершена!');
+      callbacks?.onInfo?.('Головоломка еще не завершена!');
     }
-  }, [board]);
+  }, [board, callbacks]);
 
   // Подсказка
   const handleHint = useCallback(() => {
@@ -121,10 +128,17 @@ export function useGameState(): UseGameStateReturn {
 
   // Новая игра
   const handleNewGame = useCallback(() => {
-    if (window.confirm('Начать новую игру? Текущий прогресс будет потерян.')) {
-      createNewPuzzle(difficulty);
+    const startNewGame = () => createNewPuzzle(difficulty);
+
+    if (callbacks?.onConfirm) {
+      callbacks.onConfirm('Начать новую игру? Текущий прогресс будет потерян.', startNewGame);
+    } else {
+      // Fallback на window.confirm если callback не передан
+      if (window.confirm('Начать новую игру? Текущий прогресс будет потерян.')) {
+        startNewGame();
+      }
     }
-  }, [difficulty, createNewPuzzle]);
+  }, [difficulty, createNewPuzzle, callbacks]);
 
   // Изменение сложности - убран setTimeout, заменён на декларативный useEffect
   const setDifficulty = useCallback((newDifficulty: Difficulty) => {

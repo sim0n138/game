@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import styles from './App.module.css';
 import SudokuGrid from './components/SudokuGrid';
 import DifficultySelector from './components/DifficultySelector';
@@ -6,13 +6,31 @@ import NumberPad from './components/NumberPad';
 import GameControls from './components/GameControls';
 import GameStats from './components/GameStats';
 import Timer from './components/Timer';
+import Toast from './components/Toast';
+import ConfirmDialog from './components/ConfirmDialog';
 import { useGameState } from './hooks/useGameState';
 import { useGameStats } from './hooks/useGameStats';
 import { useKeyboardControls } from './hooks/useKeyboardControls';
+import { useToast } from './hooks/useToast';
 
 function App() {
   const { stats, recordCompletion } = useGameStats();
   const elapsedTimeRef = useRef(0);
+  const { toasts, showToast, removeToast } = useToast();
+  const [confirmDialog, setConfirmDialog] = useState<{
+    message: string;
+    onConfirm: () => void;
+  } | null>(null);
+
+  // Callbacks для useGameState
+  const onSuccess = useCallback((message: string) => showToast(message, 'success'), [showToast]);
+  const onError = useCallback((message: string) => showToast(message, 'error'), [showToast]);
+  const onInfo = useCallback((message: string) => showToast(message, 'info'), [showToast]);
+  const onConfirm = useCallback((message: string, onConfirmed: () => void) => {
+    setConfirmDialog({ message, onConfirm: onConfirmed });
+  }, []);
+
+  const gameCallbacks = { onSuccess, onError, onInfo, onConfirm };
 
   const {
     puzzle,
@@ -29,7 +47,7 @@ function App() {
     handleHint,
     setDifficulty,
     setSelectedCell
-  } = useGameState();
+  } = useGameState(gameCallbacks);
 
   // Обработчик обновления времени из Timer
   const handleTimeUpdate = (seconds: number) => {
@@ -58,6 +76,28 @@ function App() {
 
   return (
     <div className={styles.app}>
+      {/* Toast уведомления */}
+      {toasts.map(toast => (
+        <Toast
+          key={toast.id}
+          message={toast.message}
+          type={toast.type}
+          onClose={() => removeToast(toast.id)}
+        />
+      ))}
+
+      {/* Диалог подтверждения */}
+      {confirmDialog && (
+        <ConfirmDialog
+          message={confirmDialog.message}
+          onConfirm={() => {
+            confirmDialog.onConfirm();
+            setConfirmDialog(null);
+          }}
+          onCancel={() => setConfirmDialog(null)}
+        />
+      )}
+
       <header className={styles.header}>
         <h1>🧩 Sudoku</h1>
         <p>Классическая игра-головоломка</p>

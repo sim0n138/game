@@ -1,8 +1,8 @@
-import { SudokuBoard, SudokuPuzzle, Difficulty } from '../types/sudoku';
+import { SudokuBoard, SudokuPuzzle, Difficulty, BOARD_SIZE, BOX_SIZE, MIN_VALUE, MAX_VALUE } from '../types/sudoku';
 
 // Создает пустую доску 9x9
 export function createEmptyBoard(): SudokuBoard {
-  return Array(9).fill(null).map(() => Array(9).fill(null));
+  return Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(null));
 }
 
 // Копирует доску
@@ -12,8 +12,16 @@ export function copyBoard(board: SudokuBoard): SudokuBoard {
 
 // Проверяет, можно ли поставить число в ячейку
 export function isValidMove(board: SudokuBoard, row: number, col: number, num: number): boolean {
+  // Валидация входных данных
+  if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) {
+    return false;
+  }
+  if (num < MIN_VALUE || num > MAX_VALUE) {
+    return false;
+  }
+
   // Проверка строки
-  for (let x = 0; x < 9; x++) {
+  for (let x = 0; x < BOARD_SIZE; x++) {
     if (board[row][x] === num) {
       return false;
     }

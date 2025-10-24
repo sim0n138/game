@@ -1,5 +1,5 @@
-import React, { memo } from 'react';
-import { SudokuBoard } from '../types/sudoku';
+import React, { memo, useMemo, useCallback } from 'react';
+import { SudokuBoard, BOX_SIZE } from '../types/sudoku';
 import styles from './SudokuGrid.module.css';
 
 interface SudokuGridProps {
@@ -17,11 +17,13 @@ const SudokuGrid: React.FC<SudokuGridProps> = memo(({
   errors,
   onCellClick
 }) => {
-  const isFixed = (row: number, col: number): boolean => {
+  // Мемоизируем функцию проверки фиксированных ячеек
+  const isFixed = useCallback((row: number, col: number): boolean => {
     return initialBoard[row][col] !== null;
-  };
+  }, [initialBoard]);
 
-  const getCellClass = (row: number, col: number): string => {
+  // Мемоизируем функцию генерации классов для ячейки
+  const getCellClass = useMemo(() => (row: number, col: number): string => {
     const classes = [styles.cell];
 
     if (isFixed(row, col)) {
@@ -42,10 +44,10 @@ const SudokuGrid: React.FC<SudokuGridProps> = memo(({
         classes.push(styles.highlighted);
       }
 
-      const selectedBoxRow = Math.floor(selectedCell.row / 3);
-      const selectedBoxCol = Math.floor(selectedCell.col / 3);
-      const cellBoxRow = Math.floor(row / 3);
-      const cellBoxCol = Math.floor(col / 3);
+      const selectedBoxRow = Math.floor(selectedCell.row / BOX_SIZE);
+      const selectedBoxCol = Math.floor(selectedCell.col / BOX_SIZE);
+      const cellBoxRow = Math.floor(row / BOX_SIZE);
+      const cellBoxCol = Math.floor(col / BOX_SIZE);
 
       if (selectedBoxRow === cellBoxRow && selectedBoxCol === cellBoxCol) {
         classes.push(styles.highlighted);
@@ -53,16 +55,16 @@ const SudokuGrid: React.FC<SudokuGridProps> = memo(({
     }
 
     // Добавляем классы для границ квадратов 3x3
-    if (col % 3 === 2 && col < 8) {
+    if (col % BOX_SIZE === BOX_SIZE - 1 && col < 8) {
       classes.push(styles.rightBorder);
     }
 
-    if (row % 3 === 2 && row < 8) {
+    if (row % BOX_SIZE === BOX_SIZE - 1 && row < 8) {
       classes.push(styles.bottomBorder);
     }
 
     return classes.join(' ');
-  };
+  }, [isFixed, selectedCell, errors]);
 
   return (
     <div className={styles.grid}>
