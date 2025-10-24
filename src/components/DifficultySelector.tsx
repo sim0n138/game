@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Difficulty } from '../types/sudoku';
 
 interface DifficultySelectorProps {
@@ -6,7 +6,7 @@ interface DifficultySelectorProps {
   onSelectDifficulty: (difficulty: Difficulty) => void;
 }
 
-const DifficultySelector: React.FC<DifficultySelectorProps> = ({
+const DifficultySelector: React.FC<DifficultySelectorProps> = memo(({
   currentDifficulty,
   onSelectDifficulty
 }) => {
@@ -33,6 +33,8 @@ const DifficultySelector: React.FC<DifficultySelectorProps> = ({
       </div>
     </div>
   );
-};
+});
+
+DifficultySelector.displayName = 'DifficultySelector';
 
 export default DifficultySelector;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 interface GameControlsProps {
   onNewGame: () => void;
@@ -7,7 +7,7 @@ interface GameControlsProps {
   isCompleted: boolean;
 }
 
-const GameControls: React.FC<GameControlsProps> = ({
+const GameControls: React.FC<GameControlsProps> = memo(({
   onNewGame,
   onCheckSolution,
   onHint,
@@ -33,6 +33,8 @@ const GameControls: React.FC<GameControlsProps> = ({
       )}
     </div>
   );
-};
+});
+
+GameControls.displayName = 'GameControls';
 
 export default GameControls;

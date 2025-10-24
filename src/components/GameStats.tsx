@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { GameStats as Stats } from '../types/sudoku';
 
 interface GameStatsProps {
   stats: Stats;
 }
 
-const GameStats: React.FC<GameStatsProps> = ({ stats }) => {
+const GameStats: React.FC<GameStatsProps> = memo(({ stats }) => {
   const formatTime = (seconds: number | null): string => {
     if (seconds === null) return '--:--';
     const mins = Math.floor(seconds / 60);
@@ -26,6 +26,8 @@ const GameStats: React.FC<GameStatsProps> = ({ stats }) => {
       </div>
     </div>
   );
-};
+});
+
+GameStats.displayName = 'GameStats';
 
 export default GameStats;
