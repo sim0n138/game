@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import { SudokuBoard } from '../types/sudoku';
+import styles from './SudokuGrid.module.css';
 
 interface SudokuGridProps {
   board: SudokuBoard;
@@ -21,24 +22,24 @@ const SudokuGrid: React.FC<SudokuGridProps> = memo(({
   };
 
   const getCellClass = (row: number, col: number): string => {
-    const classes = ['sudoku-cell'];
+    const classes = [styles.cell];
 
     if (isFixed(row, col)) {
-      classes.push('fixed');
+      classes.push(styles.fixed);
     }
 
     if (selectedCell && selectedCell.row === row && selectedCell.col === col) {
-      classes.push('selected');
+      classes.push(styles.selected);
     }
 
     if (errors[row][col]) {
-      classes.push('error');
+      classes.push(styles.error);
     }
 
     // Подсветка связанных ячеек
     if (selectedCell) {
       if (selectedCell.row === row || selectedCell.col === col) {
-        classes.push('highlighted');
+        classes.push(styles.highlighted);
       }
 
       const selectedBoxRow = Math.floor(selectedCell.row / 3);
@@ -47,26 +48,26 @@ const SudokuGrid: React.FC<SudokuGridProps> = memo(({
       const cellBoxCol = Math.floor(col / 3);
 
       if (selectedBoxRow === cellBoxRow && selectedBoxCol === cellBoxCol) {
-        classes.push('highlighted');
+        classes.push(styles.highlighted);
       }
     }
 
     // Добавляем классы для границ квадратов 3x3
     if (col % 3 === 2 && col < 8) {
-      classes.push('right-border');
+      classes.push(styles.rightBorder);
     }
 
     if (row % 3 === 2 && row < 8) {
-      classes.push('bottom-border');
+      classes.push(styles.bottomBorder);
     }
 
     return classes.join(' ');
   };
 
   return (
-    <div className="sudoku-grid">
+    <div className={styles.grid}>
       {board.map((row, rowIndex) => (
-        <div key={rowIndex} className="sudoku-row">
+        <div key={rowIndex} className={styles.row}>
           {row.map((cell, colIndex) => (
             <div
               key={`${rowIndex}-${colIndex}`}

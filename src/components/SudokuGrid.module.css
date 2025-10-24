@@ -1,0 +1,71 @@
+/* SudokuGrid Module Styles */
+.grid {
+  background: white;
+  padding: 10px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  display: inline-block;
+  border: 3px solid #2d3748;
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  border: 1px solid #cbd5e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  background: white;
+  color: #2d3748;
+  transition: all 0.15s ease;
+}
+
+.cell:hover {
+  background: #edf2f7;
+}
+
+.cell.fixed {
+  background: #f7fafc;
+  color: #1a202c;
+  font-weight: 700;
+  cursor: default;
+}
+
+.cell.selected {
+  background: #4299e1;
+  color: white;
+}
+
+.cell.highlighted {
+  background: #e6f2ff;
+}
+
+.cell.error {
+  background: #fed7d7;
+  color: #c53030;
+}
+
+.cell.rightBorder {
+  border-right: 3px solid #2d3748;
+}
+
+.cell.bottomBorder {
+  border-bottom: 3px solid #2d3748;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cell {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+  }
+}

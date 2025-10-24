@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import styles from './GameControls.module.css';
 
 interface GameControlsProps {
   onNewGame: () => void;
@@ -14,20 +15,20 @@ const GameControls: React.FC<GameControlsProps> = memo(({
   isCompleted
 }) => {
   return (
-    <div className="game-controls">
-      <button className="control-button new-game" onClick={onNewGame}>
+    <div className={styles.controls}>
+      <button className={`${styles.button} ${styles.newGame}`} onClick={onNewGame}>
         Новая игра
       </button>
-      <button className="control-button check" onClick={onCheckSolution}>
+      <button className={`${styles.button} ${styles.check}`} onClick={onCheckSolution}>
         Проверить
       </button>
-      <button className="control-button hint" onClick={onHint}>
+      <button className={`${styles.button} ${styles.hint}`} onClick={onHint}>
         Подсказка
       </button>
 
       {isCompleted && (
-        <div className="completion-message">
-          <span className="success-icon">✓</span>
+        <div className={styles.completionMessage}>
+          <span className={styles.successIcon}>✓</span>
           <span>Поздравляем! Головоломка решена!</span>
         </div>
       )}

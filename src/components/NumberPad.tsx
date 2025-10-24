@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import styles from './NumberPad.module.css';
 
 interface NumberPadProps {
   onNumberClick: (num: number) => void;
@@ -7,19 +8,19 @@ interface NumberPadProps {
 
 const NumberPad: React.FC<NumberPadProps> = memo(({ onNumberClick, onClear }) => {
   return (
-    <div className="number-pad">
-      <div className="number-buttons">
+    <div className={styles.pad}>
+      <div className={styles.buttons}>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => (
           <button
             key={num}
-            className="number-button"
+            className={styles.button}
             onClick={() => onNumberClick(num)}
           >
             {num}
           </button>
         ))}
       </div>
-      <button className="clear-button" onClick={onClear}>
+      <button className={styles.clearButton} onClick={onClear}>
         Очистить
       </button>
     </div>
